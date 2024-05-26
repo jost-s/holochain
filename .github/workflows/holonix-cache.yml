@@ -2,6 +2,10 @@ name: "Holonix cache"
 
 on: push
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   cache-update:
     strategy:
@@ -9,6 +13,14 @@ jobs:
 
     runs-on: macos-13
     steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v25
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.18.0/install
+
       - name: "Build launcher"
         run: |
           nix build -L .#hc-launch
