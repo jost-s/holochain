@@ -1,9 +1,6 @@
 name: "Holonix cache"
 
-on:
-  push:
-    branches:
-      - develop
+on: push
 
 jobs:
   cache-update:
