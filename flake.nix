@@ -46,26 +46,27 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    versions.url = "github:holochain/holochain?dir=versions/0_2";
+    versions.url = "github:holochain/holochain?dir=versions/weekly";
 
-    holochain.follows = "empty";
-    holochain.flake = false;
-    lair.follows = "empty";
-    lair.flake = false;
-    launcher.follows = "empty";
+    # holochain.follows = "empty";
+    # holochain.flake = false;
+    # lair.follows = "empty";
+    # lair.flake = false;
+    # launcher.follows = "empty";
+    launcher.url = "github:holochain/launcher/holochain-0.3";
     launcher.flake = false;
-    scaffolding.follows = "empty";
-    scaffolding.flake = false;
+    # scaffolding.follows = "empty";
+    # scaffolding.flake = false;
 
-    cargo-chef = {
-      url = "github:LukeMathWalker/cargo-chef/main";
-      flake = false;
-    };
+    # cargo-chef = {
+    #   url = "github:LukeMathWalker/cargo-chef/main";
+    #   flake = false;
+    # };
 
-    cargo-rdme = {
-      url = "github:orium/cargo-rdme/v1.1.0";
-      flake = false;
-    };
+    # cargo-rdme = {
+    #   url = "github:orium/cargo-rdme/v1.1.0";
+    #   flake = false;
+    # };
   };
 
   # refer to flake-parts docs https://flake.parts/
