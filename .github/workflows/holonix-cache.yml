@@ -15,4 +15,4 @@ jobs:
         with:
           install_url: https://releases.nixos.org/nix/nix-2.18.0/install
 
-      - run: nix build -L .#launcher
+      - run: nix build -L .#hc-launch
