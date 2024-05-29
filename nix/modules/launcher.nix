@@ -33,11 +33,6 @@
         ++ lib.optionals pkgs.stdenv.isDarwin
           [
             self'.legacyPackages.apple_sdk'.frameworks.AppKit
-            # self'.legacyPackages.apple_sdk'.frameworks.CoreFoundation
-            # self'.legacyPackages.apple_sdk'.frameworks.CoreServices
-            # pkgs.darwin.apple_sdk_11_0.frameworks.Security
-            # self'.legacyPackages.apple_sdk'.frameworks.Security
-            # self'.legacyPackages.apple_sdk'.frameworks.IOKit
             self'.legacyPackages.apple_sdk'.frameworks.WebKit
           ]
         ;
