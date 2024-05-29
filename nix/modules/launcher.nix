@@ -12,7 +12,7 @@
       commonArgs = {
 
         pname = "hc-launch";
-        src = inputs.versions.inputs.launcher;
+        src = inputs.launcher;
 
         CARGO_PROFILE = "release";
 
