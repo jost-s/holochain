@@ -15,12 +15,6 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
     # lib to build nix packages from rust crates
-    crate2nix = {
-      url = "github:kolloch/crate2nix";
-      flake = false;
-    };
-
-    # lib to build nix packages from rust crates
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,11 +29,6 @@
       flake = false;
     };
 
-    # To execute checks when making a commit
-    # Only /flake-module.nix is needed here -> Importing with `flake=false`.
-    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
-    pre-commit-hooks-nix.flake = false;
-
     # rustup, rust and cargo
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -48,24 +37,8 @@
 
     versions.url = "github:holochain/holochain?dir=versions/0_3_rc";
 
-    holochain.follows = "empty";
-    holochain.flake = false;
-    lair.follows = "empty";
-    lair.flake = false;
     launcher.follows = "empty";
     launcher.flake = false;
-    scaffolding.follows = "empty";
-    scaffolding.flake = false;
-
-    cargo-chef = {
-      url = "github:LukeMathWalker/cargo-chef/main";
-      flake = false;
-    };
-
-    cargo-rdme = {
-      url = "github:orium/cargo-rdme/v1.1.0";
-      flake = false;
-    };
   };
 
   # refer to flake-parts docs https://flake.parts/
@@ -79,10 +52,7 @@
         (
           map (m: "${./.}/nix/modules/${m}")
             (builtins.attrNames (builtins.readDir ./nix/modules))
-        )
-        ++ [
-          (inputs.pre-commit-hooks-nix + /flake-module.nix)
-        ];
+        );
 
       perSystem = { pkgs, ... }: {
         legacyPackages = pkgs;
