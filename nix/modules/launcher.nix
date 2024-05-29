@@ -26,6 +26,7 @@
         ])
         ++ (lib.optionals pkgs.stdenv.isLinux
           (with pkgs; [
+            libsoup
             # webkitgtk.dev
             # gdk-pixbuf
             # gtk3
