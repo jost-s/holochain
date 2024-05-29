@@ -12,7 +12,7 @@
       commonArgs = {
 
         pname = "hc-launch";
-        src = flake.config.reconciledInputs.launcher;
+        src = inputs.versions.inputs.launcher;
 
         CARGO_PROFILE = "release";
 
