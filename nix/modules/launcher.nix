@@ -79,16 +79,16 @@
           pkgs.makeBinaryWrapper
         ];
 
-        preFixup = ''
-          gappsWrapperArgs+=(
-            --set WEBKIT_DISABLE_COMPOSITING_MODE 1
-          )
+        # preFixup = ''
+        #   gappsWrapperArgs+=(
+        #     --set WEBKIT_DISABLE_COMPOSITING_MODE 1
+        #   )
 
-          # without this the DevTools will just display an unparsed HTML file (see https://github.com/tauri-apps/tauri/issues/5711#issuecomment-1336409601)
-          gappsWrapperArgs+=(
-            --prefix XDG_DATA_DIRS : "${pkgs.shared-mime-info}/share"
-          )
-        '';
+        #   # without this the DevTools will just display an unparsed HTML file (see https://github.com/tauri-apps/tauri/issues/5711#issuecomment-1336409601)
+        #   gappsWrapperArgs+=(
+        #     --prefix XDG_DATA_DIRS : "${pkgs.shared-mime-info}/share"
+        #   )
+        # '';
       });
 
     in
