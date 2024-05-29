@@ -19,16 +19,16 @@
         cargoExtraArgs = "--bin hc-launch";
 
         buildInputs = (with pkgs; [
-          openssl
+          # openssl
 
           # this is required for glib-networking
           glib
         ])
         ++ (lib.optionals pkgs.stdenv.isLinux
           (with pkgs; [
-            webkitgtk.dev
-            gdk-pixbuf
-            gtk3
+            # webkitgtk.dev
+            # gdk-pixbuf
+            # gtk3
           ]))
         ++ lib.optionals pkgs.stdenv.isDarwin
           [
