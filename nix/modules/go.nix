@@ -18,7 +18,7 @@
               name = "go";
 
               nativeBuildInputs = with pkgs; [
-                # makeBinaryWrapper
+                makeBinaryWrapper
                 go
               ];
 
