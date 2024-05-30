@@ -18,18 +18,13 @@
 
         cargoExtraArgs = "--bin hc-launch";
 
-        buildInputs = (with pkgs; [
-          # openssl
-
-          # this is required for glib-networking
-          glib
-        ])
+        buildInputs = [
+          pkgs.glib
+        ]
         ++ (lib.optionals pkgs.stdenv.isLinux
-          (with pkgs; [
-            webkitgtk.dev
-            # gdk-pixbuf
-            # gtk3
-          ]))
+          [
+            pkgs.webkitgtk.dev
+          ])
         ++ lib.optionals pkgs.stdenv.isDarwin
           [
             self'.legacyPackages.apple_sdk'.frameworks.AppKit
@@ -37,17 +32,17 @@
           ]
         ;
 
-        nativeBuildInputs = (with pkgs; [
-          perl
-          pkg-config
+        nativeBuildInputs = [
+          pkgs.perl
+          pkgs.pkg-config
 
           # currently needed to build tx5
           self'.packages.goWrapper
-        ])
+        ]
         ++ (lib.optionals pkgs.stdenv.isLinux
-          (with pkgs; [
-            wrapGAppsHook
-          ]))
+          [
+            pkgs.wrapGAppsHook
+          ])
         ++ (lib.optionals pkgs.stdenv.isDarwin [
           pkgs.xcbuild
           pkgs.libiconv
