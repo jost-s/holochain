@@ -30,18 +30,18 @@
                 dontBuild = true;
                 dontUnpack = true;
 
-                # installPhase = ''
-                #   makeWrapper ${pkgs.go}/bin/go $out/bin/go \
-                #     ${builtins.concatStringsSep " " (
-                #       builtins.map (var: "--set ${var} \"\$${var}\"") 
-                #       [
-                #         # "NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_apple_darwin"
-                #         # "NIX_LDFLAGS"
-                #         # "NIX_CFLAGS_COMPILE_FOR_BUILD"
-                #         # "NIX_CFLAGS_COMPILE"
-                #       ]
-                #     )}
-                # '';
+                installPhase = ''
+                  makeWrapper ${pkgs.go}/bin/go $out/bin/go \
+                    ${builtins.concatStringsSep " " (
+                      builtins.map (var: "--set ${var} \"\$${var}\"") 
+                      [
+                        # "NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_apple_darwin"
+                        # "NIX_LDFLAGS"
+                        # "NIX_CFLAGS_COMPILE_FOR_BUILD"
+                        # "NIX_CFLAGS_COMPILE"
+                      ]
+                    )}
+                '';
               }
           else pkgs.go;
       };
