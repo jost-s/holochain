@@ -30,41 +30,18 @@
                 dontBuild = true;
                 dontUnpack = true;
 
-                installPhase = ''
-                  makeWrapper ${pkgs.go}/bin/go $out/bin/go \
-                    ${builtins.concatStringsSep " " (
-                      builtins.map (var: "--set ${var} \"\$${var}\"") 
-                      [
-                        "NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_apple_darwin"
-                        "NIX_LDFLAGS"
-                        "NIX_CFLAGS_COMPILE_FOR_BUILD"
-                        "NIX_CFLAGS_COMPILE"
-
-                        # confirmed needed above here
-
-                        # unsure between here
-                        # and here
-
-                        # confirmed unneeded below here
-
-                        # "NIX_CC"
-                        # "NIX_CC_FOR_BUILD"
-                        # "NIX_LDFLAGS_FOR_BUILD"
-                        # "NIX_BINTOOLS"
-                        # "NIX_CC_WRAPPER_TARGET_HOST_x86_64_apple_darwin"
-                        # "NIX_CC_WRAPPER_TARGET_BUILD_x86_64_apple_darwin"
-                        # "NIX_ENFORCE_NO_NATIVE"
-                        # "NIX_DONT_SET_RPATH"
-                        # "NIX_BINTOOLS_FOR_BUILD"
-                        # "NIX_DONT_SET_RPATH_FOR_BUILD"
-                        # "NIX_NO_SELF_RPATH"
-                        # "NIX_IGNORE_LD_THROUGH_GCC"
-                        # "NIX_PKG_CONFIG_WRAPPER_TARGET_HOST_x86_64_apple_darwin"
-                        # "NIX_COREFOUNDATION_RPATH"
-                        # "NIX_BINTOOLS_WRAPPER_TARGET_BUILD_x86_64_apple_darwin"
-                      ]
-                    )}
-                '';
+                # installPhase = ''
+                #   makeWrapper ${pkgs.go}/bin/go $out/bin/go \
+                #     ${builtins.concatStringsSep " " (
+                #       builtins.map (var: "--set ${var} \"\$${var}\"") 
+                #       [
+                #         # "NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_apple_darwin"
+                #         # "NIX_LDFLAGS"
+                #         # "NIX_CFLAGS_COMPILE_FOR_BUILD"
+                #         # "NIX_CFLAGS_COMPILE"
+                #       ]
+                #     )}
+                # '';
               }
           else pkgs.go;
       };
