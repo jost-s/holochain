@@ -14,8 +14,6 @@
         pname = "hc-launch";
         src = inputs.launcher;
 
-        CARGO_PROFILE = "release";
-
         cargoExtraArgs = "--bin hc-launch";
 
         buildInputs = [
@@ -33,20 +31,14 @@
           ]
         ;
 
-        nativeBuildInputs = [
-          pkgs.pkg-config
-
-          # currently needed to build tx5
-        ]
-        ++ (lib.optionals pkgs.stdenv.isLinux
+        nativeBuildInputs = [ ]
+          ++ (lib.optionals pkgs.stdenv.isLinux
           [
             pkgs.go
-            pkgs.wrapGAppsHook
+            pkgs.pkg-config
           ])
-        ++ (lib.optionals pkgs.stdenv.isDarwin [
+          ++ (lib.optionals pkgs.stdenv.isDarwin [
           (if pkgs.system == "x86_64-darwin" then self'.packages.goWrapper else pkgs.go)
-          pkgs.xcbuild
-          pkgs.libiconv
         ])
         ;
 
