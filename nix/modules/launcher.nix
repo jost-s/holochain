@@ -37,13 +37,14 @@
           pkgs.pkg-config
 
           # currently needed to build tx5
-          self'.packages.goWrapper
         ]
         ++ (lib.optionals pkgs.stdenv.isLinux
           [
+            pkgs.go
             pkgs.wrapGAppsHook
           ])
         ++ (lib.optionals pkgs.stdenv.isDarwin [
+          (if pkgs.system == "x86_64-darwin" then self'.packages.goWrapper else pkgs.go)
           pkgs.xcbuild
           pkgs.libiconv
         ])
