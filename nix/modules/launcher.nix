@@ -20,6 +20,7 @@
 
         buildInputs = [
           pkgs.glib
+          pkgs.perl
         ]
         ++ (lib.optionals pkgs.stdenv.isLinux
           [
@@ -33,7 +34,6 @@
         ;
 
         nativeBuildInputs = [
-          pkgs.perl
           pkgs.pkg-config
 
           # currently needed to build tx5
