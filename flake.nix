@@ -15,12 +15,6 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
     # lib to build nix packages from rust crates
-    crate2nix = {
-      url = "github:kolloch/crate2nix";
-      flake = false;
-    };
-
-    # lib to build nix packages from rust crates
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,25 +41,8 @@
     };
 
     versions.url = "github:holochain/holochain?dir=versions/weekly";
-
-    holochain.follows = "empty";
-    holochain.flake = false;
-    lair.follows = "empty";
-    lair.flake = false;
     launcher.follows = "empty";
     launcher.flake = false;
-    scaffolding.follows = "empty";
-    scaffolding.flake = false;
-
-    cargo-chef = {
-      url = "github:LukeMathWalker/cargo-chef/main";
-      flake = false;
-    };
-
-    cargo-rdme = {
-      url = "github:orium/cargo-rdme/v1.1.0";
-      flake = false;
-    };
   };
 
   # refer to flake-parts docs https://flake.parts/
