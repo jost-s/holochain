@@ -3,11 +3,13 @@ name: "Holonix cache"
 on: push
 
 jobs:
-  cache-update:
+  build:
     strategy:
       fail-fast: false
+      matrix:
+        os: [macos-latest, macos-13, ubuntu-latest]
 
-    runs-on: [macos-13]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
