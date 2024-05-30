@@ -2,7 +2,7 @@
 
 {
   options.reconciledInputs = lib.mkOption { type = lib.types.raw; };
-  config.reconciledInputs = lib.genAttrs (builtins.attrNames inputs.versions.inputs)
+  config.reconciledInputs = lib.genAttrs (builtins.attrNames inputs)
     (name:
       let
         input =

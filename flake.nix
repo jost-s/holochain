@@ -40,9 +40,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    versions.url = "github:holochain/holochain?dir=versions/weekly";
-    launcher.follows = "empty";
-    launcher.flake = false;
+    launcher = {
+      url = "github:holochain/launcher/holochain-weekly";
+      flake = false;
+    };
   };
 
   # refer to flake-parts docs https://flake.parts/
