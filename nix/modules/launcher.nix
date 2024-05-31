@@ -9,6 +9,11 @@
       };
       craneLib = inputs.crane.lib.${system}.overrideToolchain rustToolchain;
 
+      apple_sdk =
+        if system == "x86_64-darwin"
+        then pkgs.darwin.apple_sdk_10_12
+        else pkgs.darwin.apple_sdk_11_0;
+
       commonArgs = {
 
         pname = "hc-launch";
@@ -26,8 +31,8 @@
           ])
         ++ lib.optionals pkgs.stdenv.isDarwin
           [
-            self'.legacyPackages.apple_sdk'.frameworks.AppKit
-            self'.legacyPackages.apple_sdk'.frameworks.WebKit
+            apple_sdk.frameworks.AppKit
+            apple_sdk.frameworks.WebKit
           ]
         ;
 
