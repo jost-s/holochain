@@ -3,10 +3,6 @@
     "Holochain is an open-source framework to develop peer-to-peer applications with high levels of security, reliability, and performance.";
 
   inputs = {
-    # workaround to allow the passing in of the `.git` directory into the release-automation tests
-    repo-git.url = "file+file:/dev/null";
-    repo-git.flake = false;
-
     # nix packages pointing to the github repo
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
@@ -14,15 +10,6 @@
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # filter out all .nix files to not affect the input hash
-    # when these are changes
-    nix-filter.url = "github:numtide/nix-filter";
-    # provide downward compatibility for nix-shell/derivation users
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
     };
 
     # rustup, rust and cargo

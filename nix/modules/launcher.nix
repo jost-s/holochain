@@ -27,6 +27,7 @@
         ++ (lib.optionals pkgs.stdenv.isLinux
           [
             pkgs.glib
+            pkgs.go
             pkgs.webkitgtk.dev
           ])
         ++ lib.optionals pkgs.stdenv.isDarwin
@@ -39,7 +40,6 @@
         nativeBuildInputs = [ ]
           ++ (lib.optionals pkgs.stdenv.isLinux
           [
-            pkgs.go
             pkgs.pkg-config
           ])
           ++ (lib.optionals pkgs.stdenv.isDarwin [
