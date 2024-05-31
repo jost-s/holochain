@@ -38,7 +38,20 @@
             pkgs.pkg-config
           ])
           ++ (lib.optionals pkgs.stdenv.isDarwin [
-          (if pkgs.system == "x86_64-darwin" then self'.packages.goWrapper else pkgs.go)
+          (if pkgs.system == "x86_64-darwin" then
+            pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
+              {
+                name = "go";
+                nativeBuildInputs = with pkgs; [
+                  makeBinaryWrapper
+                  go
+                ];
+                dontBuild = true;
+                dontUnpack = true;
+                installPhase = ''
+                  makeWrapper ${pkgs.go}/bin/go $out/bin/go
+                '';
+              } else pkgs.go)
         ])
         ;
 
@@ -57,10 +70,6 @@
             pkgs.overrideSDK pkgs.stdenv "11.0"
           else
             pkgs.stdenv;
-
-        # nativeBuildInputs = commonArgs.nativeBuildInputs ++ [
-        #   pkgs.makeBinaryWrapper
-        # ];
       });
 
     in
