@@ -3,11 +3,13 @@
 { self, inputs, lib, ... }@flake: {
   perSystem = { config, self', inputs', system, pkgs, ... }:
     let
-      rustToolchain = config.rustHelper.mkRust {
-        track = "stable";
-        version = "1.78.0";
+      rustedNixpkgs = import inputs.nixpkgs {
+        inherit system;
+        overlays = [ (import inputs.rust-overlay) ];
       };
-      craneLib = inputs.crane.lib.${system}.overrideToolchain rustToolchain;
+      rustToolchain = rustedNixpkgs.rust-bin.stable."1.78.0".minimal;
+
+      craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchain;
 
       apple_sdk =
         if system == "x86_64-darwin"
@@ -64,18 +66,20 @@
       };
 
       # derivation building all dependencies
-      deps = craneLib.buildDepsOnly (commonArgs // { });
+      deps = craneLib.buildDepsOnly
+        (commonArgs // { });
 
       # derivation with the main crates
-      package = craneLib.buildPackage (commonArgs // {
-        cargoArtifacts = deps;
+      package = craneLib.buildPackage
+        (commonArgs // {
+          cargoArtifacts = deps;
 
-        stdenv =
-          if pkgs.stdenv.isDarwin then
-            pkgs.overrideSDK pkgs.stdenv "11.0"
-          else
-            pkgs.stdenv;
-      });
+          stdenv =
+            if pkgs.stdenv.isDarwin then
+              pkgs.overrideSDK pkgs.stdenv "11.0"
+            else
+              pkgs.stdenv;
+        });
 
     in
     {
