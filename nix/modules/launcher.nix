@@ -50,16 +50,15 @@
                   installPhase = ''
                     makeWrapper ${pkgs.go}/bin/go $out/bin/go
                   '';
-                } else pkgs.go)
+                }
+            else pkgs.go)
           ]
         ;
 
-        nativeBuildInputs = [ ]
-          ++ (lib.optionals pkgs.stdenv.isLinux
-          [
-            pkgs.pkg-config
-          ])
-        ;
+        nativeBuildInputs = (
+          if pkgs.stdenv.isLinux then [ pkgs.pkg-config ]
+          else [ ]
+        );
 
         doCheck = false;
       };
@@ -69,7 +68,7 @@
         (commonArgs // { });
 
       # derivation with the main crates
-      package = craneLib.buildPackage
+      hc-launch = craneLib.buildPackage
         (commonArgs // {
           cargoArtifacts = deps;
 
@@ -83,7 +82,7 @@
     in
     {
       packages = {
-        hc-launch = package;
+        inherit hc-launch;
       };
     };
 }
