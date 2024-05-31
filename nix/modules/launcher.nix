@@ -22,11 +22,11 @@
         cargoExtraArgs = "--bin hc-launch";
 
         buildInputs = [
-          pkgs.glib
           pkgs.perl
         ]
         ++ (lib.optionals pkgs.stdenv.isLinux
           [
+            pkgs.glib
             pkgs.webkitgtk.dev
           ])
         ++ lib.optionals pkgs.stdenv.isDarwin
