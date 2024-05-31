@@ -32,7 +32,7 @@
     };
 
     launcher = {
-      url = "github:holochain/launcher/holochain-0.3";
+      url = "github:holochain/launcher/holochain-weekly";
       flake = false;
     };
   };
