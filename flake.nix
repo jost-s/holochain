@@ -25,20 +25,91 @@
   };
 
   # refer to flake-parts docs https://flake.parts/
-  outputs = inputs @ { self, nixpkgs, flake-parts, ... }:
+  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, ... }:
     # all possible parameters for a module: https://flake.parts/module-arguments.html#top-level-module-arguments
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" ];
 
-      imports =
-        # auto import all nix code from `./modules`, treat each one as a flake and merge them
-        (
-          map (m: "${./.}/nix/modules/${m}")
-            (builtins.attrNames (builtins.readDir ./nix/modules))
-        );
+      perSystem = { pkgs, system, ... }:
+        let
+          rustedNixpkgs = import nixpkgs {
+            inherit system;
+            overlays = [ (import rust-overlay) ];
+          };
+          rustToolchain = rustedNixpkgs.rust-bin.stable."1.78.0".minimal;
 
-      perSystem = { pkgs, ... }: {
-        legacyPackages = pkgs;
-      };
+          craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rustToolchain;
+
+          apple_sdk =
+            if system == "x86_64-darwin"
+            then pkgs.darwin.apple_sdk_10_12
+            else pkgs.darwin.apple_sdk_11_0;
+
+          commonArgs = {
+            pname = "hc-launch";
+            src = inputs.launcher;
+            cargoExtraArgs = "--bin hc-launch";
+
+            buildInputs = [
+              pkgs.perl
+            ]
+            ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
+              [
+                pkgs.glib
+                pkgs.go
+                pkgs.webkitgtk.dev
+              ])
+            ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
+              [
+                apple_sdk.frameworks.AppKit
+                apple_sdk.frameworks.WebKit
+
+                (if pkgs.system == "x86_64-darwin" then
+                  pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
+                    {
+                      name = "go";
+                      nativeBuildInputs = with pkgs; [
+                        makeBinaryWrapper
+                        go
+                      ];
+                      dontBuild = true;
+                      dontUnpack = true;
+                      installPhase = ''
+                        makeWrapper ${pkgs.go}/bin/go $out/bin/go
+                      '';
+                    }
+                else pkgs.go)
+              ]
+            ;
+
+            nativeBuildInputs = (
+              if pkgs.stdenv.isLinux then [ pkgs.pkg-config ]
+              else [ ]
+            );
+
+            doCheck = false;
+          };
+
+          # derivation building all dependencies
+          deps = craneLib.buildDepsOnly
+            (commonArgs // { });
+
+          # derivation with the main crates
+          hc-launch = craneLib.buildPackage
+            (commonArgs // {
+              cargoArtifacts = deps;
+
+              stdenv =
+                if pkgs.stdenv.isDarwin then
+                  pkgs.overrideSDK pkgs.stdenv "11.0"
+                else
+                  pkgs.stdenv;
+            });
+        in
+        {
+          packages = {
+            inherit hc-launch;
+          };
+        };
     };
 }
